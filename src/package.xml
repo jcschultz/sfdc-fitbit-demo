@@ -22,7 +22,7 @@
     </types>
     <types>
         <members>Fitbit_API__c</members>
-        <members>Fitbit_Oauth__c</members>
+        <members>User</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -43,6 +43,10 @@
         <members>Admin</members>
         <members>Standard</members>
         <name>Profile</name>
+    </types>
+    <types>
+        <members>*</members>
+        <name>RemoteSiteSetting</name>
     </types>
     <types>
         <members>*</members>

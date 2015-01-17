@@ -10,6 +10,16 @@
         <enabled>false</enabled>
     </classAccesses>
     <custom>false</custom>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Fitbit_Oauth_Token_Secret__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>User.Fitbit_Oauth_Token__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <pageAccesses>
         <apexPage>Fitbit</apexPage>
         <enabled>false</enabled>
