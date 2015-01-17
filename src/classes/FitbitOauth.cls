@@ -48,8 +48,8 @@ public class FitbitOauth {
 		String tempToken;
 		String tempSecret;
 		PageReference pRef = null;
-		String timeStamp = '' + DateTime.now().getTime();
 		Map<String, String> params = new Map<String, String>();
+		String timeStamp = generateTimeStamp();
 		
 		params.put('oauth_callback', URL.getSalesforceBaseUrl().toExternalForm() + '/apex/FitbitCallback');
 		params.put('oauth_consumer_key',  apiSettings.Client_Key__c);
@@ -57,7 +57,7 @@ public class FitbitOauth {
 		params.put('oauth_signature_method', 'HMAC-SHA1');
 		params.put('oauth_timestamp', timeStamp);
 		params.put('oauth_version', '1.0');
-		params.put('oauth_signature', generateSignature(params, 'POST', apiSettings.Temporary_Credentials_URL__c));
+		params.put('oauth_signature', generateSignature(params, 'POST', apiSettings.Temporary_Credentials_URL__c, null));
 		
 		HttpRequest req = new HttpRequest();
 		req.setMethod('POST');
@@ -67,7 +67,7 @@ public class FitbitOauth {
 		HttpResponse res = new Http().send(req);
 		
 		if (res.getStatusCode() > 299) {
-			// error retrieving temp access
+			handleError('Error getting authorization.', res, req);
 		}
 		else {
 			for (String s : res.getBody().split('&')) {
@@ -75,7 +75,10 @@ public class FitbitOauth {
 				
 				if (pair[0] == 'oauth_token') {
 					tempToken = pair[1];
-					break;
+				}
+				else if (pair[0] == 'oauth_token_secret') {
+					userData.Fitbit_Oauth_Token_Secret__c = pair[1];
+					update userData;
 				}
 			}
 			
@@ -95,8 +98,8 @@ public class FitbitOauth {
 	* @return: void
 	*/
 	public void requestTokens(String tempToken, String verifier) {
-		String timeStamp = '' + DateTime.now().getTime();
 		Map<String, String> params = new Map<String, String>();
+		String timeStamp = generateTimeStamp();
 		
 		params.put('oauth_consumer_key',  apiSettings.Client_Key__c);
 		params.put('oauth_nonce', 'nONce' + timeStamp);
@@ -105,7 +108,7 @@ public class FitbitOauth {
 		params.put('oauth_token', tempToken);
 		params.put('oauth_verifier', verifier);
 		params.put('oauth_version', '1.0');
-		params.put('oauth_signature', generateSignature(params, 'POST', apiSettings.Token_Credentials_URL__c));
+		params.put('oauth_signature', generateSignature(params, 'POST', apiSettings.Token_Credentials_URL__c, userData.Fitbit_Oauth_Token_Secret__c));
 		
 		HttpRequest req = new HttpRequest();
 		req.setMethod('POST');
@@ -115,7 +118,7 @@ public class FitbitOauth {
 		HttpResponse res = new Http().send(req);
 		
 		if (res.getStatusCode() > 299) {
-			// error retrieving temp access
+			handleError('Error retrieving tokens.', res, req);
 		}
 		else {
 			for (String s : res.getBody().split('&')) {
@@ -140,9 +143,10 @@ public class FitbitOauth {
 	* @param: params - Map of key-value pairs of parameters
 	* @param: method - String. Method of http request
 	* @param: url - Url of request
+	* @param: secret - String. The temp secret used during permanent access token. Null otherwise.
 	* @return: String
 	*/
-	private String generateSignature(Map<String, String> params, String method, String url) {
+	private String generateSignature(Map<String, String> params, String method, String url, String secret) {
 		String base = method + '&' + EncodingUtil.urlEncode(url, 'UTF-8') + '&';
 		String base2 = '';
 		
@@ -151,15 +155,27 @@ public class FitbitOauth {
 		keys.sort();
 		
 		for (Integer i = 0; i < keys.size(); i++) {
-			base2 += keys.get(i) + '=' + params.get(keys.get(i));
+			String param = params.get(keys.get(i));
+			
+			if (keys.get(i) == 'oauth_callback') {
+				param = EncodingUtil.urlEncode(param, 'UTF-8');
+			}
+			
+			base2 += keys.get(i) + '=' + param;
 			
 			if (i < keys.size()-1) {
 				base2 += '&';
 			}
 		}
 		
+		String cryptoKey = apiSettings.Client_Secret__c + '&';
+		
+		if (String.isNotBlank(secret)) {
+			cryptoKey += secret;
+		}
+		
 		String signatureBaseString = base + EncodingUtil.urlEncode(base2, 'UTF-8');
-		Blob sigBlob = Crypto.generateMac('HmacSHA1', Blob.valueOf(signatureBaseString), Blob.valueOf(apiSettings.Client_Secret__c + '&'));
+		Blob sigBlob = Crypto.generateMac('HmacSHA1', Blob.valueOf(signatureBaseString), Blob.valueOf(cryptoKey));
 		String signature = EncodingUtil.urlEncode(EncodingUtil.base64encode(sigBlob), 'UTF-8');
 		
 		return signature;
@@ -192,6 +208,17 @@ public class FitbitOauth {
 	
 	/**
 	* @author: John Schultz
+	* @date: 2015-01-17
+	* @description: Generates the 10 digit timestamp
+	* @return: String
+	*/
+	private String generateTimeStamp() {
+		String timeStamp = '' + DateTime.now().getTime();
+		return timeStamp.left(10);
+	}
+	
+	/**
+	* @author: John Schultz
 	* @date: 2015-01-16
 	* @description: Retrieves the fitbit api custom setting info
 	* @return: void
@@ -203,6 +230,25 @@ public class FitbitOauth {
 		catch (Exception e) {
 			throw new FitbitOauthException('The Fitbit OAuth Service has not yet been created. Your System Administrator must first set that up.');
 		}
+	}
+	
+	/**
+	* @author: John Schultz
+	* @date: 2015-01-17
+	* @description: Handles error responses
+	* @param: errorMsg - String. Message to be displayed before error details.
+	* @param: res - HttpResponse
+	* @param: req - HttpRequest
+	* @return: void
+	*/
+	private void handleError(String errorMsg, HttpResponse res, HttpRequest req) {
+		System.debug('@@JOHN@@ body:' + req.getBody());
+		System.debug('@@JOHN@@ method:' + req.getMethod());
+		System.debug('@@JOHN@@ authorization header:' + req.getHeader('Authorization'));
+		System.debug('@@JOHN@@ endpoint: ' + req.getEndpoint());
+		System.debug('@@JOHN@@ Response: ' + res.getBody());
+		
+		throw new FitbitOauthException(errorMsg + ' Status:' + res.getStatus() + '. Response:' + res.getBody());
 	}
 	
 	/**
