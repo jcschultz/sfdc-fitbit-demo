@@ -21,7 +21,22 @@ public class FitBitController {
 		private set;
 	}
 	
+	/**
+	* @author: John Schultz
+	* @date: 2015-01-16
+	* @description: Controller method
+	*/
 	public FitBitController() {
 		fbOauth = new FitbitOauth(UserInfo.getUserId());
+	}
+	
+	/**
+	* @author: John Schultz
+	* @date: 2015-01-16
+	* @description: Redirects the user to the fitbit authorization page
+	* @return: pRef - PageReference url with fitbit api specific parameters
+	*/
+	public PageReference authorize() {
+		return fbOauth.getAuthorization();
 	}
 }

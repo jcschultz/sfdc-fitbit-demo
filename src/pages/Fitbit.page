@@ -1,3 +1,17 @@
-<apex:page showHeader="true" sidebar="true" controller="FitBitController" title="Fitbit">
+<apex:page showHeader="true" sidebar="true" controller="FitBitController" title="Fitbit Connect">
 	
+	
+	<apex:sectionHeader title="Fitbit Connect" subtitle="{!$User.FirstName} {!$User.LastName}" />
+	
+	<apex:pageBlock rendered="{!needsAuthorization}">
+		<apex:pageMessages id="pageMessages" />
+		
+		<apex:form>
+			<div>In order for Salesfore to retrieve your Fitbit data, you must click the button below. Clicking the button will take you to Fitbit&rsquo;s website and allow you to authorize Salesforce to request your Fitbit stats. Salesforce will not be able to see or access your Fitbit username or password.</div>
+			
+			<div id="authorization-button">
+				<apex:commandButton value="Authorize" action="{!authorize}" />
+			</div>
+		</apex:form>
+	</apex:pageBlock>
 </apex:page>
