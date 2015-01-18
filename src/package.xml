@@ -55,7 +55,11 @@
     </types>
     <types>
         <members>Fitbit_Reports</members>
+        <members>Fitbit_Reports/Fitbit_Calories_Last_30_Days</members>
+        <members>Fitbit_Reports/Fitbit_Distance_Last_30_Days</members>
+        <members>Fitbit_Reports/Fitbit_Floors_Last_30_Days</members>
         <members>Fitbit_Reports/Fitbit_Stats_Last_30_Days</members>
+        <members>Fitbit_Reports/Fitbit_Steps_Last_30_Days</members>
         <name>Report</name>
     </types>
     <types>
