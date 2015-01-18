@@ -176,14 +176,17 @@ public class FitbitOauth {
 			Goals jsonGoals;
 			Summary jsonSummary;
 			
+			System.debug('@@JOHN@@ Response: ' + res.getBody());
 			JSONParser parser = JSON.createParser(res.getBody());
 			
 			while(parser.nextToken() != null) {
 				if (parser.getCurrentToken() == JSONToken.FIELD_NAME && parser.getText() == 'goals') {
+					parser.nextToken();
 					jsonGoals = (Goals)parser.readValueAs(Goals.class);
 					parser.skipChildren();
 				}
 				else if (parser.getCurrentToken() == JSONToken.FIELD_NAME && parser.getText() == 'summary') {
+					parser.nextToken();
 					jsonSummary = (Summary)parser.readValueAs(Summary.class);
 					parser.skipChildren();
 				}
@@ -293,6 +296,7 @@ public class FitbitOauth {
 		}
 		
 		String signatureBaseString = base + EncodingUtil.urlEncode(base2, 'UTF-8');
+		System.debug('@@JOHN@@ signatureBaseString: ' + signatureBaseString);
 		Blob sigBlob = Crypto.generateMac('HmacSHA1', Blob.valueOf(signatureBaseString), Blob.valueOf(cryptoKey));
 		String signature = EncodingUtil.urlEncode(EncodingUtil.base64encode(sigBlob), 'UTF-8');
 		
