@@ -7,18 +7,18 @@
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>Fitbit_Activity__c$Steps__c</column>
+            <column>Fitbit_Activity__c$Floors__c</column>
         </chartSummaries>
         <chartSummaries>
             <aggregate>Sum</aggregate>
             <axisBinding>y</axisBinding>
-            <column>Fitbit_Activity__c$User__c.Fitbit_Goal_Steps__c</column>
+            <column>Fitbit_Activity__c$User__c.Fitbit_Goal_Floors__c</column>
         </chartSummaries>
         <chartType>VerticalColumnLine</chartType>
         <enableHoverLabels>true</enableHoverLabels>
         <expandOthers>true</expandOthers>
         <groupingColumn>Fitbit_Activity__c$Date__c</groupingColumn>
-        <legendPosition>Right</legendPosition>
+        <legendPosition>Bottom</legendPosition>
         <location>CHART_TOP</location>
         <showAxisLabels>true</showAxisLabels>
         <showPercentage>false</showPercentage>
@@ -28,6 +28,7 @@
         <summaryAxisRange>Auto</summaryAxisRange>
         <textColor>#000000</textColor>
         <textSize>12</textSize>
+        <title>Floors (Last 30 Days)</title>
         <titleColor>#000000</titleColor>
         <titleSize>18</titleSize>
     </chart>
@@ -71,14 +72,13 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>Fitbit_Activity__c$User__c.Fitbit_Goal_Floors__c</field>
     </columns>
-    <description>Last 30 Days for Fitbit Stats</description>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
         <field>Fitbit_Activity__c$Date__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
-    <name>Fitbit Stats (Last 30 Days)</name>
+    <name>Fitbit Floors (Last 30 Days)</name>
     <params>
         <name>co</name>
         <value>1</value>
