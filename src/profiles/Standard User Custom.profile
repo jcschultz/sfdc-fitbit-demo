@@ -17,7 +17,7 @@
         <apexClass>FitbitOauth</apexClass>
         <enabled>false</enabled>
     </classAccesses>
-    <custom>false</custom>
+    <custom>true</custom>
     <fieldPermissions>
         <editable>true</editable>
         <field>Fitbit_Activity__c.Active_Score__c</field>
@@ -156,6 +156,15 @@
     <layoutAssignments>
         <layout>Fitbit_Activity__c-Fitbit Activity Layout</layout>
     </layoutAssignments>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Fitbit_Activity__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
     <pageAccesses>
         <apexPage>Fitbit</apexPage>
         <enabled>false</enabled>

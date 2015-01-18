@@ -46,7 +46,7 @@
     </types>
     <types>
         <members>Admin</members>
-        <members>Standard</members>
+        <members>Standard User Custom</members>
         <name>Profile</name>
     </types>
     <types>
