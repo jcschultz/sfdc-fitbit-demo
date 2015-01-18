@@ -48,6 +48,61 @@
     <enableFeeds>true</enableFeeds>
     <externalSharingModel>Private</externalSharingModel>
     <fields>
+        <fullName>Fitbit_Goal_Active_Minutes__c</fullName>
+        <externalId>false</externalId>
+        <label>Fitbit Goal Active Minutes</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fitbit_Goal_Calories_Out__c</fullName>
+        <externalId>false</externalId>
+        <label>Fitbit Goal Calories Out</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fitbit_Goal_Distance__c</fullName>
+        <externalId>false</externalId>
+        <label>Fitbit Goal Distance</label>
+        <precision>15</precision>
+        <required>false</required>
+        <scale>2</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fitbit_Goal_Floors__c</fullName>
+        <externalId>false</externalId>
+        <label>Fitbit Goal Floors</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Fitbit_Goal_Steps__c</fullName>
+        <externalId>false</externalId>
+        <label>Fitbit Goal Steps</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackFeedHistory>false</trackFeedHistory>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Fitbit_Oauth_Token_Secret__c</fullName>
         <externalId>false</externalId>
         <label>Fitbit Oauth Token Secret</label>
