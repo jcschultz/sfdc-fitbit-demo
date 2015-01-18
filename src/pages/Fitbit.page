@@ -28,9 +28,80 @@
 			line-height: 30px;
 			text-indent: 70px;
 		}
+		#hud-container {
+			margin-bottom: 20px;
+		}
+		.hud-row {}
+		.hud-column {
+			width: 50%;
+			float: left;
+		}
+		.hud-content {
+			margin: 2px;
+			border: 3px solid #206276;
+		}
+		.hud-header {
+			background: #206276;
+			color: #fff;
+			width: 100%;
+			font-weight: normal;
+			font-size: 18px;
+			line-height: 1.4;
+			text-transform: uppercase;
+		}
+		.hud-inner-column {
+			float: left;
+			width: 47%;
+		}
+		.hud-inner-column.first-stat{
+			border-right: 2px solid #206276;
+		}
+		.hud-stat {
+			display: block;
+			float: left;
+			margin: 30px 5px 5px 10px;
+			font-size: 40px;
+			letter-spacing: -3px;
+		}
+		.hud-percent {
+			display: block;
+			float: left;
+			margin: 42px 0 0 10px;
+			font-size: 27px;
+			letter-spacing: -3px;
+		}
+		.stat-label {
+			font-size: 14px;
+			letter-spacing: -1px;
+			display: inline-block;
+			padding-left: 2px;
+		}
+		.percent-label {
+			font-size:14px;
+			display: inline-block;
+			padding-left: 3px;
+		}
+		#refresh-info {
+			border: 1px solid #ff0065;
+			padding: 5px;
+			font-style: italic;
+			margin: 20px 0;
+		}
+		.report-container {
+			float: left;
+			width: 50%;
+		}
+		.report-container .analyticsEmbeddedReportChart.width_medium {
+			margin: 10px auto;
+		}
+		.cf:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
 	</style>
 	
-	<apex:sectionHeader title="Fitbit Connect" subtitle="{!$User.FirstName} {!$User.LastName}" />
+	<apex:sectionHeader subtitle="Fitbit Connect" title="{!$User.FirstName} {!$User.LastName}" />
 	
 	<apex:pageBlock rendered="{!needsAuthorization}">
 		<apex:pageMessages id="pageMessages" />
@@ -47,12 +118,86 @@
 	<apex:pageBlock rendered="{!!needsAuthorization}" id="authorizedBlock">
 		<apex:pageMessages id="pageMessages" />
 		
+		<div id="hud-container" class="cf">
+			<div class="hud-row cf">
+				<div class="hud-column cf">
+					<div class="hud-content cf">
+						<div class="hud-header">Today</div><!--.hud-header-->
+						<div class="hud-inner-column cf first-stat">
+							<span class="hud-stat"><apex:outputText value="{0, number, #,###,###}"><apex:param value="{!todaySteps}" /></apex:outputText><span class="stat-label">steps</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!todayStepsPercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+						<div class="hud-inner-column cf">
+							<span class="hud-stat">{!todayDistance}<span class="stat-label">miles</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!todayDistancePercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+					</div><!--.hud-content-->
+				</div><!--.hud-column-->
+				<div class="hud-column cf">
+					<div class="hud-content cf">
+						<div class="hud-header">Yesterday</div><!--.hud-header-->
+						<div class="hud-inner-column cf first-stat">
+							<span class="hud-stat"><apex:outputText value="{0, number, #,###,###}"><apex:param value="{!yesterdaySteps}" /></apex:outputText><span class="stat-label">steps</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!yesterdayStepsPercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+						<div class="hud-inner-column cf">
+							<span class="hud-stat">{!yesterdayDistance}<span class="stat-label">miles</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!yesterdayDistancePercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+					</div><!--.hud-content-->
+				</div><!--.hud-column-->
+			</div><!--.hud-row-->
+			<div class="hud-row cf">
+				<div class="hud-column cf">
+					<div class="hud-content cf">
+						<div class="hud-header">7 Days</div><!--.hud-header-->
+						<div class="hud-inner-column cf first-stat">
+							<span class="hud-stat"><apex:outputText value="{0, number, #,###,###}"><apex:param value="{!last7StepsTotal}" /></apex:outputText><span class="stat-label">steps</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!last7StepsPercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+						<div class="hud-inner-column cf">
+							<span class="hud-stat">{!last7DistanceTotal}<span class="stat-label">miles</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!last7DistancePercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+					</div><!--.hud-content-->
+				</div><!--.hud-column-->
+				<div class="hud-column cf">
+					<div class="hud-content cf">
+						<div class="hud-header">30 Days</div><!--.hud-header-->
+						<div class="hud-inner-column cf first-stat">
+							<span class="hud-stat"><apex:outputText value="{0, number, #,###,###}"><apex:param value="{!last30StepsTotal}" /></apex:outputText><span class="stat-label">steps</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!last30StepsPercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+						<div class="hud-inner-column cf">
+							<span class="hud-stat">{!last30DistanceTotal}<span class="stat-label">miles</span></span><!--.hud-stat-->
+							<span class="hud-percent">{!last30DistancePercent}<span class="percent-label">%</span></span><!--.hud-percent-->	
+						</div><!--.hud-inner-column-->
+					</div><!--.hud-content-->
+				</div><!--.hud-column-->
+			</div><!--.hud-row-->
+		</div><!--#hud-container-->
+		
 		<apex:form >
-			<div>Click the button below to retrieve the today&rsquo;s latest stats from Fitbit&rsquo;s server.</div>
+			<div id="refresh-info">
+				Stats are automatically pulled in from Fitbit on an hourly basis. Feeling impatient? Click the button to retrieve the today&rsquo;s latest stats from Fitbit&rsquo;s server.
+				<apex:commandButton value="Get Stats" action="{!fetchToday}" reRender="authorizedBlock" status="loadingStatus" />
+			</div>
 			
-			<apex:commandButton value="Get Stats" action="{!fetchToday}" reRender="authorizedBlock" status="loadingStatus" />
+			<div id="reports" class="cf">
+				<div class="report-container">
+					 <analytics:reportChart developerName="Fitbit_Steps_Last_30_Days" cacheResults="false" showRefreshButton="true" size="medium"></analytics:reportChart>
+				 </div>
+				 <div class="report-container">
+					<analytics:reportChart developerName="Fitbit_Distance_Last_30_Days" cacheResults="false" showRefreshButton="true" size="medium"></analytics:reportChart>
+				</div>
+				<div class="report-container">
+					<analytics:reportChart developerName="Fitbit_Floors_Last_30_Days" cacheResults="false" showRefreshButton="true" size="medium"></analytics:reportChart>
+				</div>
+				<div class="report-container">
+					<analytics:reportChart developerName="Fitbit_Calories_Last_30_Days" cacheResults="false" showRefreshButton="true" size="medium"></analytics:reportChart>
+				</div>
+			</div>
 			
-			<analytics:reportChart developerName="Fitbit_Stats_Last_30_Days" cacheResults="false" showRefreshButton="true" size="medium"></analytics:reportChart>
 		</apex:form>
 	</apex:pageBlock>
 	
