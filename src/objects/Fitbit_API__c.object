@@ -35,6 +35,18 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Get_Activities_URL__c</fullName>
+        <description>URL for retrieving activity record for a specific date. Use template syntax for the date. Ex: .../activities/date/{{date}}.json</description>
+        <externalId>false</externalId>
+        <inlineHelpText>URL for retrieving activity record for a specific date. Use template syntax for the date. Ex: .../activities/date/{{date}}.json</inlineHelpText>
+        <label>Get Activities URL</label>
+        <length>100</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Temporary_Credentials_URL__c</fullName>
         <description>Temporary Credentials (Request Token) URL</description>
         <externalId>false</externalId>
