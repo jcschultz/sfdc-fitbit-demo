@@ -54,6 +54,11 @@
         <name>RemoteSiteSetting</name>
     </types>
     <types>
+        <members>Fitbit_Reports</members>
+        <members>Fitbit_Reports/Fitbit_Stats_Last_30_Days</members>
+        <name>Report</name>
+    </types>
+    <types>
         <members>*</members>
         <name>ReportType</name>
     </types>

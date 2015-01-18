@@ -47,12 +47,12 @@
 	<apex:pageBlock rendered="{!!needsAuthorization}" id="authorizedBlock">
 		<apex:pageMessages id="pageMessages" />
 		
-		<apex:form>
-			<div>Click the button below to retrieve the latest stats from Fitbit&rsquo;s server.</div>
+		<apex:form >
+			<div>Click the button below to retrieve the today&rsquo;s latest stats from Fitbit&rsquo;s server.</div>
 			
 			<apex:commandButton value="Get Stats" action="{!fetchToday}" reRender="authorizedBlock" status="loadingStatus" />
 			
-			<p><strong>Activity Id: </strong> {!activityId}</p>
+			<analytics:reportChart developerName="Fitbit_Stats_Last_30_Days" cacheResults="false" showRefreshButton="true" size="medium"></analytics:reportChart>
 		</apex:form>
 	</apex:pageBlock>
 	
