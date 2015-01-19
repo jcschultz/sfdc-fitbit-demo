@@ -75,7 +75,7 @@ public class FitBitController {
 		last30DistancePercent = 0;
 		fbOauth = new FitbitOauth(UserInfo.getUserId());
 		
-		if (!needsAuthorization) {
+		if (!needsAuthorization && !Test.isRunningTest()) {
 			calculateStats();
 		}
 	}
