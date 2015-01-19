@@ -116,9 +116,10 @@ public class FitBitController {
 			
 			calculateStats();
 			
-			ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO, 'Fitbit stats have been updated. Steps: ' + fitbitActivity.Steps__c));
+			ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO, 'Fitbit stats have been updated. Steps: ' + todaySteps));
 		}
 		catch (Exception e) {
+			System.debug('@@JOHN@@ Exception: ' + e + '. Line: ' + e.getLineNumber());
 			ApexPages.addMessage(new ApexPages.message(ApexPages.Severity.FATAL, 'There was an error retrieving the Fitbit stats. Error: ' + e.getMessage()));
 		}
 		
