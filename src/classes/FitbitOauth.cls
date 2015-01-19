@@ -216,7 +216,7 @@ public class FitbitOauth {
 				
 				// first try to find a Fitbit activity record for this user with a matching date
 				try {
-					fba = [SELECT Id, Active_Score__c, Activity_Calories__c, Calories_BMR__c, Calories_Out__c, Date__c, Elevation__c, Fairly_Active_Minutes__c, Floors__c, Lightly_Active_Distance__c, Lightly_Active_Minutes__c, Logged_Activities_Distance__c, Marginal_Calories__c, Moderately_Active_Distance__c, Sedentary_Active_Distance__c, Sedentary_Minutes__c, Steps__c, Total_Distance__c, Tracker_Distance__c, User__c, Very_Active_Distance__c, Very_Active_Minutes__c FROM Fitbit_Activity__c WHERE User__c =: userData.Id AND Date__c =: dateFormatted LIMIT 1];
+					fba = [SELECT Id, Active_Score__c, Activity_Calories__c, Calories_BMR__c, Calories_Out__c, Date__c, Elevation__c, Fairly_Active_Minutes__c, Floors__c, Lightly_Active_Distance__c, Lightly_Active_Minutes__c, Logged_Activities_Distance__c, Marginal_Calories__c, Moderately_Active_Distance__c, Sedentary_Active_Distance__c, Sedentary_Minutes__c, Steps__c, Total_Distance__c, Tracker_Distance__c, User__c, Very_Active_Distance__c, Very_Active_Minutes__c, OwnerId FROM Fitbit_Activity__c WHERE User__c =: userData.Id AND Date__c =: dateFormatted LIMIT 1];
 				}
 				catch (Exception e){
 					fba = new Fitbit_Activity__c();
@@ -243,6 +243,7 @@ public class FitbitOauth {
 				fba.User__c = userData.Id;
 				fba.Very_Active_Distance__c = jsonSummary.getDistance('veryActive');
 				fba.Very_Active_Minutes__c = jsonSummary.veryActiveMinutes;
+				fba.OwnerId = userData.Id;
 				
 				try {
 					upsert fba;
