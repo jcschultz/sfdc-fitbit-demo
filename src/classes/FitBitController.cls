@@ -129,8 +129,8 @@ public class FitBitController {
 	private void calculateStats() {
 		Date today = Date.today();
 		Date yesterday = today.addDays(-1);
-		Date days30 = today.addDays(30);
-		Date days7 = today.addDays(7);
+		Date days30 = today.addDays(-30);
+		Date days7 = today.addDays(-7);
 		
 		goalSteps = fbOauth.getUserData().Fitbit_Goal_Steps__c.intValue();
 		goalDistance = fbOauth.getUserData().Fitbit_Goal_Distance__c;
@@ -138,7 +138,7 @@ public class FitBitController {
 		System.debug('@@JOHN@@ goalSteps:' + goalSteps);
 		System.debug('@@JOHN@@ goalDistance:' + goalDistance);
 		
-		for (Fitbit_Activity__c a : [SELECT Id, Active_Score__c, Activity_Calories__c, Calories_BMR__c, Calories_Out__c, Date__c, Elevation__c, Fairly_Active_Minutes__c, Floors__c, Lightly_Active_Distance__c, Lightly_Active_Minutes__c, Logged_Activities_Distance__c, Marginal_Calories__c, Moderately_Active_Distance__c, Sedentary_Active_Distance__c, Sedentary_Minutes__c, Steps__c, Total_Distance__c, Tracker_Distance__c, User__c, Very_Active_Distance__c, Very_Active_Minutes__c FROM Fitbit_Activity__c WHERE User__c =: UserInfo.getUserId() AND Date__c <: days30 ORDER BY Date__c DESC]) {
+		for (Fitbit_Activity__c a : [SELECT Id, Active_Score__c, Activity_Calories__c, Calories_BMR__c, Calories_Out__c, Date__c, Elevation__c, Fairly_Active_Minutes__c, Floors__c, Lightly_Active_Distance__c, Lightly_Active_Minutes__c, Logged_Activities_Distance__c, Marginal_Calories__c, Moderately_Active_Distance__c, Sedentary_Active_Distance__c, Sedentary_Minutes__c, Steps__c, Total_Distance__c, Tracker_Distance__c, User__c, Very_Active_Distance__c, Very_Active_Minutes__c FROM Fitbit_Activity__c WHERE User__c =: UserInfo.getUserId() AND Date__c >: days30 ORDER BY Date__c DESC]) {
 			
 			if (a.Date__c == today) {
 				todaySteps = a.Steps__c.intValue();
@@ -150,7 +150,7 @@ public class FitBitController {
 				yesterdayDistance = a.Total_Distance__c;
 			}
 			
-			if (a.Date__c < days7) {
+			if (a.Date__c > days7) {
 				last7StepsTotal += a.Steps__c.intValue();
 				last7DistanceTotal += a.Total_Distance__c;
 			}
